@@ -14,6 +14,21 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group([
+    'prefix' => 'admin',
+    'as' => 'admin.',
+    'middleware' => 'can:admin'
+], function(){
+    Route::get('/', function () {
+        return "Área administrativa";
+    });
+});
+
+Route::get('/force-login', function(){
+   \Auth::loginUsingId(1);
+});
