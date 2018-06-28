@@ -2,6 +2,7 @@
 
 namespace CodeFlix\Models;
 
+use CodeFlix\Notifications\DefaultResetPasswordNotification;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -33,7 +34,14 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function teste(){
-        $user = new User();
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new DefaultResetPasswordNotification($token));
     }
 }
