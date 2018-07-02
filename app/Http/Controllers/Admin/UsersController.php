@@ -50,14 +50,17 @@ class UsersController extends Controller
         $form = FormBuilder::create(UserForm::class);
 
         if(!$form->isValid()){
-            //redirecionar para a página de criação de usuários
+            return redirect()
+                ->back()
+                ->withErrors($form->getErrors())
+                ->withInput();
         }
 
         $data = $form->getFieldValues();
         $data['role'] = User::ROLE_ADMIN;
         $data['password'] = User::generatePassword();
         User::create($data);
-
+        $request->session()->flash('message', 'Usuário criado com sucesso.');
         return redirect()->route('admin.users.index');
     }
 
